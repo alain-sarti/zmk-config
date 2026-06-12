@@ -40,6 +40,7 @@
     behaviors {
         hml: home_row_mod_left {
             compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
             flavor = "balanced";
             tapping-term-ms = <280>;
             quick-tap-ms = <175>;
@@ -50,6 +51,7 @@
         };
         hmr: home_row_mod_right {
             compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
             flavor = "balanced";
             tapping-term-ms = <280>;
             quick-tap-ms = <175>;
@@ -62,11 +64,13 @@
         // Encoder mouse-scroll (needs CONFIG_ZMK_POINTING). Flip CW/CCW on hardware if reversed.
         scroll_v: scroll_vertical {
             compatible = "zmk,behavior-sensor-rotate";
+            #sensor-binding-cells = <0>;
             bindings = <&msc SCRL_DOWN>, <&msc SCRL_UP>;
             tap-ms = <40>;
         };
         scroll_h: scroll_horizontal {
             compatible = "zmk,behavior-sensor-rotate";
+            #sensor-binding-cells = <0>;
             bindings = <&msc SCRL_RIGHT>, <&msc SCRL_LEFT>;
             tap-ms = <40>;
         };
