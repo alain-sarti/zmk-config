@@ -32,6 +32,17 @@
     quick-tap-ms = <175>;
 };
 
+// Encoder mouse-scroll fix. The default &msc ramps velocity to full over
+// time-to-max-speed-ms = 300, but a sensor-rotate detent only holds the
+// binding for tap-ms (~40), so each notch accumulated ~0 scroll units and
+// nothing moved. Drop the ramp so one detent = one real scroll step.
+// (Matches the known-good eerraa/zmk-config-sofle reference.)
+&msc {
+    acceleration-exponent = <1>;
+    time-to-max-speed-ms = <40>;
+    delay-ms = <0>;
+};
+
 / {
     // Home-row mods (GACS): tap = letter, hold = modifier.
     // Positional hold-tap (hold only triggers when the NEXT key is on the opposite
