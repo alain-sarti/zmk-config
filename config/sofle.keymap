@@ -12,7 +12,7 @@
 // Bump the default scroll velocity (10) so a single encoder detent emits a
 // scroll the host actually registers. Must be defined BEFORE pointing.h, which
 // expands SCRL_UP/DOWN to MOVE_Y(±ZMK_POINTING_DEFAULT_SCRL_VAL). Tune to taste.
-#define ZMK_POINTING_DEFAULT_SCRL_VAL 140
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 40
 #include <dt-bindings/zmk/pointing.h>
 
 #define BASE 0
