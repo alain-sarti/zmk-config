@@ -9,6 +9,10 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/rgb.h>
 #include <dt-bindings/zmk/ext_power.h>
+// Bump the default scroll velocity (10) so a single encoder detent emits a
+// scroll the host actually registers. Must be defined BEFORE pointing.h, which
+// expands SCRL_UP/DOWN to MOVE_Y(±ZMK_POINTING_DEFAULT_SCRL_VAL). Tune to taste.
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 140
 #include <dt-bindings/zmk/pointing.h>
 
 #define BASE 0
@@ -30,17 +34,6 @@
     tapping-term-ms = <200>;
     flavor = "tap-preferred";
     quick-tap-ms = <175>;
-};
-
-// Encoder mouse-scroll fix. The default &msc ramps velocity to full over
-// time-to-max-speed-ms = 300, but a sensor-rotate detent only holds the
-// binding for tap-ms (~40), so each notch accumulated ~0 scroll units and
-// nothing moved. Drop the ramp so one detent = one real scroll step.
-// (Matches the known-good eerraa/zmk-config-sofle reference.)
-&msc {
-    acceleration-exponent = <1>;
-    time-to-max-speed-ms = <40>;
-    delay-ms = <0>;
 };
 
 / {
@@ -73,17 +66,21 @@
         };
 
         // Encoder mouse-scroll (needs CONFIG_ZMK_POINTING). Flip CW/CCW on hardware if reversed.
+        // tap-ms must be LARGE: a sensor-rotate detent holds the binding for tap-ms,
+        // and the pointing system needs a long-enough hold to emit a scroll the host
+        // registers. 40ms emitted nothing; 250ms is the ZMK-recommended working value
+        // (zmkfirmware/zmk#72). Lower it later for snappier scroll if 250 feels laggy.
         scroll_v: scroll_vertical {
             compatible = "zmk,behavior-sensor-rotate";
             #sensor-binding-cells = <0>;
             bindings = <&msc SCRL_DOWN>, <&msc SCRL_UP>;
-            tap-ms = <40>;
+            tap-ms = <250>;
         };
         scroll_h: scroll_horizontal {
             compatible = "zmk,behavior-sensor-rotate";
             #sensor-binding-cells = <0>;
             bindings = <&msc SCRL_RIGHT>, <&msc SCRL_LEFT>;
-            tap-ms = <40>;
+            tap-ms = <250>;
         };
     };
 
